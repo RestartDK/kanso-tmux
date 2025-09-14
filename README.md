@@ -1,245 +1,81 @@
-# Tokyo Night Tmux
+# Kansō Tmux
 
-![example workflow](https://github.com/janoamaral/tokyo-night-tmux/actions/workflows/pre-commit.yml/badge.svg?branch=master)
+A clean, elegant Tmux theme inspired by the [Kansō VSCode theme](https://github.com/webhooked/kanso-vscode) - an evolution of the original Kanagawa theme. This theme invites *focus*, not attention, with its thoughtful color selections and balanced visual hierarchy.
 
-A clean, dark Tmux theme that celebrates the lights of Downtown [Tokyo at night.](https://www.google.com/search?q=tokyo+night&newwindow=1&sxsrf=ACYBGNRiOGCstG_Xohb8CgG5UGwBRpMIQg:1571032079139&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiayIfIhpvlAhUGmuAKHbfRDaIQ_AUIEigB&biw=1280&bih=666&dpr=2)
-The perfect companion for [tokyonight-vim](https://github.com/ghifarit53/tokyonight-vim)
-Adapted from the original, [Visual Studio Code theme](https://github.com/enkia/tokyo-night-vscode-theme).
-The old version (deprecated) is still available in the `legacy` branch.
+Built upon the excellent foundation of [Tokyo Night Tmux](https://github.com/janoamaral/tokyo-night-tmux) by [@janoamaral](https://github.com/janoamaral), this version adapts the beautiful Kansō color palette for tmux, providing a cohesive experience across your development environment.
 
-<a href="https://www.buymeacoffee.com/jano" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+The perfect companion for [Kansō VSCode theme](https://github.com/webhooked/kanso-vscode) and other Kansō-themed applications.
 
 ## About this theme
 
-This is a very opinionated project, as I am a Tech Lead, this theme is very developer-focused.
+I have been loving the [Kansō VSCode theme](https://github.com/webhooked/kanso-vscode) and the [Tokyo Night Tmux](https://github.com/janoamaral/tokyo-night-tmux) and wanted to mix these together in this fork for a consistent colour scheme workflow.
 
-## Requirements
+## Credits
 
-This theme has the following hard requirements:
+This theme is built upon the excellent work of:
 
-- Any patched [Nerd Fonts] (v3 or higher)
-- Bash 4.2 or newer
+- **[@janoamaral](https://github.com/janoamaral)** - Original creator of [Tokyo Night Tmux](https://github.com/janoamaral/tokyo-night-tmux) which provides the robust foundation and feature set
+- **[@webhooked](https://github.com/webhooked)** - Creator of the beautiful [Kansō VSCode theme](https://github.com/webhooked/kanso-vscode) that inspired the color palette and design philosophy
 
-The following are recommended for full support of all widgets and features:
+Special thanks to the open source community for creating these amazing tools that make me spend more time on config hell.
 
-- [Noto Sans] Symbols 2 (for segmented digit numbers)
-- [bc] (for netspeed and git widgets)
-- [jq], [gh], [glab] (for git widgets)
-- [playerctl] (Linux) or [nowplaying-cli] (macOS) for music statusbar
+## Extra
 
-### macOS
+### Dynamic Theme Setup with dark-notify
 
-macOS still ships with bash 3.2 so you must provide a newer version.
-You can easily install all dependencies via [Homebrew]:
+For macOS users who want their tmux theme to automatically switch between light and dark modes based on system appearance, you can use [dark-notify](https://github.com/cormacrelf/dark-notify) by [@cormacrelf](https://github.com/cormacrelf).
 
-```bash
-brew install --cask font-monaspace-nerd-font font-noto-sans-symbols-2
-brew install bash bc coreutils gawk gh glab gsed jq nowplaying-cli
-```
+#### Installation
 
-### Linux
-
-#### Alpine Linux
+Install dark-notify using Homebrew:
 
 ```bash
-apk add bash bc coreutils gawk git jq playerctl sed
+brew install cormacrelf/tap/dark-notify
 ```
 
-#### Arch Linux
+#### Setup Instructions
 
-```bash
-pacman -Sy bash bc coreutils git jq playerctl
-```
+1. **Create theme configuration files**:
+   Create a `themes` directory in your tmux config:
+   ```bash
+   mkdir -p ~/.config/tmux/themes
+   ```
 
-#### Ubuntu
+2. **Create theme-specific configuration files**:
 
-```bash
-apt-get install bash bc coreutils gawk git jq playerctl
-```
+   **`~/.config/tmux/themes/kanso-zen.conf`** (for dark mode):
+   ```bash
+   # Kansō Zen theme configuration
+   set -g @tokyo-night-tmux_theme night
+   set -g @tokyo-night-tmux_transparent 1 # Optional
+   # Add any other dark mode specific settings here
+   ```
 
-Check documentation for installing on other operating systems.
+   **`~/.config/tmux/themes/kanso-pearl.conf`** (for light mode):
+   ```bash
+   # Kansō Pearl theme configuration
+   set -g @tokyo-night-tmux_theme day
+   set -g @tokyo-night-tmux_transparent 1 # Optional
+   # Add any other light mode specific settings here
+   ```
 
-## Installation using TPM
+3. **Add to your `tmux.conf`**:
 
-In your `tmux.conf`:
+   Add the tmux-dark-notify plugin and configure it:
+   ```bash
+   # Add the plugin
+   set -g @plugin 'erikw/tmux-dark-notify'
+   
+   # Configure theme paths
+   set -g @dark-notify-theme-path-light '$HOME/.config/tmux/themes/kanso-pearl.conf'
+   set -g @dark-notify-theme-path-dark '$HOME/.config/tmux/themes/kanso-zen.conf'
+   
+   # Source the theme file if it exists (add this at the end of your tmux.conf)
+   if-shell "test -e ~/.local/state/tmux/tmux-dark-notify-theme.conf" \
+        "source-file ~/.local/state/tmux/tmux-dark-notify-theme.conf"
+   ```
 
-```bash
-set -g @plugin "janoamaral/tokyo-night-tmux"
-```
-
-## Configuration
-
-### Themes
-
-Use following option to change theme preference:
-
-```bash
-set -g @tokyo-night-tmux_theme storm    # storm | day | default to 'night'
-set -g @tokyo-night-tmux_transparent 1  # 1 or 0
-```
-
-### Number styles
-
-Run these commands in your terminal:
-
-```bash
-tmux set @tokyo-night-tmux_window_id_style digital
-tmux set @tokyo-night-tmux_pane_id_style hsquare
-tmux set @tokyo-night-tmux_zoom_id_style dsquare
-```
-
-Alternatively, add these lines to your  `.tmux.conf`:
-
-```bash
-set -g @tokyo-night-tmux_window_id_style digital
-set -g @tokyo-night-tmux_pane_id_style hsquare
-set -g @tokyo-night-tmux_zoom_id_style dsquare
-```
-
-### Window styles
-
-```bash
-# Icon styles
-set -g @tokyo-night-tmux_terminal_icon 
-set -g @tokyo-night-tmux_active_terminal_icon 
-
-# No extra spaces between icons
-set -g @tokyo-night-tmux_window_tidy_icons 0
-```
-
-### Widgets
-
-For widgets add following lines in you `.tmux.conf`
-
-#### Date and Time widget
-
-This widget is enabled by default. To disable it:
-
-```bash
-set -g @tokyo-night-tmux_show_datetime 0
-set -g @tokyo-night-tmux_date_format MYD
-set -g @tokyo-night-tmux_time_format 12H
-```
-
-##### Available Options
-
-- `YMD`: (Year Month Day), 2024-01-31
-- `MDY`: (Month Day Year), 01-31-2024
-- `DMY`: (Day Month Year), 31-01-2024
-
-- `24H`: 18:30
-- `12H`: 6:30 PM
-
-#### Now Playing widget
-
-```bash
-set -g @tokyo-night-tmux_show_music 1
-```
-
-#### Netspeed widget
-![Snap netspeed](snaps/netspeed.png)
-
-```bash
-set -g @tokyo-night-tmux_show_netspeed 1
-set -g @tokyo-night-tmux_netspeed_iface "wlan0" # Detected via default route
-set -g @tokyo-night-tmux_netspeed_showip 1      # Display IPv4 address (default 0)
-set -g @tokyo-night-tmux_netspeed_refresh 1     # Update interval in seconds (default 1)
-```
-
-#### Path Widget
-
-```bash
-set -g @tokyo-night-tmux_show_path 1
-set -g @tokyo-night-tmux_path_format relative # 'relative' or 'full'
-```
-
-#### Battery Widget
-
-```bash
-set -g @tokyo-night-tmux_show_battery_widget 1
-set -g @tokyo-night-tmux_battery_name "BAT1"  # some linux distro have 'BAT0'
-set -g @tokyo-night-tmux_battery_low_threshold 21 # default
-```
-
-Set variable value `0` to disable the widget. Remember to restart `tmux` after
-changing values.
-
-#### Hostname Widget
-
-```bash
-set -g @tokyo-night-tmux_show_hostname 1
-```
-
-## Styles
-
-- `hide`: hide number
-- `none`: no style, default font
-- `digital`: 7 segment number (🯰...🯹) (needs [Unicode support](https://github.com/janoamaral/tokyo-night-tmux/issues/36#issuecomment-1907072080))
-- `roman`: roman numbers (󱂈...󱂐) (needs nerdfont)
-- `fsquare`: filled square (󰎡...󰎼) (needs nerdfont)
-- `hsquare`: hollow square (󰎣...󰎾) (needs nerdfont)
-- `dsquare`: hollow double square (󰎡...󰎼) (needs nerdfont)
-- `super`: superscript symbol (⁰...⁹)
-- `sub`: subscript symbols (₀...₉)
-
-### New tokyonight Highlights ⚡
-
-Everything works out the box now. No need to modify anything and colors are hardcoded,
-so it's independent of terminal theme.
-
-- Local git stats.
-- Web based git server (GitHub/GitLab) stats.
-  - Open PR count
-  - Open PR reviews count
-  - Issue count
-- Remote branch sync indicator (you will never forget to push or pull again 🤪).
-- Great terminal icons.
-- Prefix highlight incorporated.
-- Now Playing status bar, supporting [playerctl]/[nowplaying-cli]
-- Windows has custom pane number indicator.
-- Pane zoom mode indicator.
-- Date and time.
-
-#### TODO
-
-- Add configurations
-  - remote fetch time
-  - ~number styles~
-  - indicators order
-  - disable indicators
-
-### Demo
-
-https://github.com/janoamaral/tokyo-night-tmux/assets/10008708/59ecd814-bc2b-47f2-82b1-ffdbfbc54fbf
-
-### Snapshots
-
-- Terminal: Kitty with [Tokyo Night Kitty Theme](https://github.com/davidmathers/tokyo-night-kitty-theme)
-- Font: [SFMono Nerd Font Ligaturized](https://github.com/shaunsingh/SFMono-Nerd-Font-Ligaturized)
-
-![Snap 5](snaps/logico.png)
-
-Legacy tokyo-night
-
-![Snap 4](snaps/l01.png)
-
-## Contributing
-
-> [!IMPORTANT]  
-> Please read the [contribution guide first](CONTRIBUTING.md).
-
-Feel free to open an issue or pull request with any suggestions or improvements.
-
-Ensure your editor follows the style guide provided by `.editorconfig`.
-[pre-commit] hooks are also provided to ensure code consistency, and will be
-run against any raised PRs.
-
-[pre-commit]: https://pre-commit.com/
-[Noto Sans]: https://fonts.google.com/noto/specimen/Noto+Sans
-[Nerd Fonts]: https://www.nerdfonts.com/
-[coreutils]: https://www.gnu.org/software/coreutils/
-[bc]: https://www.gnu.org/software/bc/
-[jq]: https://jqlang.github.io/jq/
-[playerctl]: https://github.com/altdesktop/playerctl
-[nowplaying-cli]: https://github.com/kirtan-shah/nowplaying-cli
-[Homebrew]: https://brew.sh/
+5. **Reload tmux configuration**:
+   ```bash
+   tmux source-file ~/.config/tmux/tmux.conf
+   ```
